@@ -1,0 +1,17 @@
+[tool.poetry]
+name = "brick-finish-line"
+version = "0.1.0"
+description = "Detects the end of the track for the Holyoke Brick Race"
+authors = ["Jacob Bashista <j@cob.email>", "Andrew Pasquale <andrew@elytra.net>"]
+
+[tool.poetry.dependencies]
+python = "^3.9"
+opencv-python = "^4.6.0"
+numpy = "^1.23.3"
+pyserial = "^3.5"
+
+[tool.poetry.dev-dependencies]
+
+[build-system]
+requires = ["poetry-core>=1.0.0"]
+build-backend = "poetry.core.masonry.api"
