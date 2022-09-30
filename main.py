@@ -41,17 +41,20 @@ while race:
                 continue
 
             frame_delta = cv2.absdiff(first_frame, gray)
-            thresh = cv2.threshold(frame_delta, 25, 255, cv2.THRESH_BINARY)[1]
-            thresh = cv2.dilate(thresh, None, iterations=2)
+            thresh = cv2.threshold(frame_delta, 75, 255, cv2.THRESH_BINARY)[1]
+            thresh = cv2.dilate(thresh, None, iterations=4)
 
             # Crop needs to be adjusted to fit finish line
             shape = thresh.shape
             height = shape[0]
             width = shape[1]
             half_width = int(width/2)
+            quarter_width = int(half_width/2)
+            framed_height = int(height/3)
+            left_height = int(height - framed_height)
 
-            left = frame[0:height, 0:half_width]
-            right = frame[0:height, half_width:width]
+            left = frame[left_height:height, quarter_width:half_width]
+            right = frame[left_height:height, half_width:width-quarter_width]
 
             left_thresh = thresh[0:height, 0:half_width]
             right_thresh = thresh[0:height, half_width:width]
@@ -63,7 +66,7 @@ while race:
             cv2.drawContours(image=right, contours=contours_right, contourIdx=-1, color=(0, 255, 0), thickness=2, lineType=cv2.LINE_AA)
 
             if(len(contours_left) >= 1 and left_time == 0):
-                # Send left track timer stop
+                # Send left track timer stop 
                 ser.write(bytes('1', 'utf-8'))
                 left_time = int(time() * 1000) - start_time
                 # write to database
@@ -83,6 +86,8 @@ while race:
             cv2.imshow('left', left)
             cv2.imshow('right', right)
 
+            # cv2.imshow('thresh', thresh)
+
             key = cv2.waitKey(1)
             if key == 27:
                 # ESC to quit
@@ -94,6 +99,7 @@ while race:
                 start_time = 0
                 left_time = 0
                 right_time = 0
+                first_frame = gray
                 ser.write(bytes('0', 'utf-8'))
 
 cam.release()
