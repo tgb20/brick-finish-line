@@ -182,9 +182,10 @@ class Window(QtWidgets.QMainWindow):
             ser.write(0)
 
         self.startButton.setText('Reset')
-        cam = cv2.VideoCapture(1)
+        cam = cv2.VideoCapture(0)
 
         check, frame = cam.read()
+
         frameHeight, frameWidth, _ = frame.shape
         self.leftWidth.setRange(0, frameWidth)
         self.leftHeight.setRange(0, frameHeight)
@@ -267,8 +268,10 @@ class Window(QtWidgets.QMainWindow):
 
             if(self.showThresh.checkState() == 2):
                 rgbFrame = cv2.cvtColor(thresh, cv2.COLOR_GRAY2RGB)
+                rgbFrame = cv2.resize(rgbFrame, (854, 480))
             else:
                 rgbFrame = cv2.cvtColor(rightRectangle, cv2.COLOR_BGR2RGB)
+                rgbFrame = cv2.resize(rgbFrame, (854, 480))
 
             qtImage = QtGui.QImage(
                 rgbFrame, rgbFrame.shape[1], rgbFrame.shape[0], rgbFrame.strides[0], QtGui.QImage.Format_RGB888)
