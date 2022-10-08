@@ -173,7 +173,7 @@ class Window(QtWidgets.QMainWindow):
 
         if(self.enableSerial.checkState() == 2):
             ser = serial.Serial(
-                port='/dev/cu.usbmodem1424401',
+                port='/dev/cu.usbmodem1414401',
                 baudrate=9600,
                 timeout=1
             )
@@ -206,7 +206,7 @@ class Window(QtWidgets.QMainWindow):
                 line = ser.readline()
 
             if(line):
-                self.status = line.decode.strip()
+                self.status = line.decode().strip()
 
             if(self.status == 'go' and self.startTime == 0):
                 self.startTime = int(time() * 1000)
