@@ -173,7 +173,7 @@ class Window(QtWidgets.QMainWindow):
 
         if(self.enableSerial.checkState() == 2):
             ser = serial.Serial(
-                port='/dev/cu.usbmodem1444301',
+                port='/dev/cu.usbmodem1414401',
                 baudrate=9600,
                 timeout=1
             )
