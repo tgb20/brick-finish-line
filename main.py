@@ -173,16 +173,17 @@ class Window(QtWidgets.QMainWindow):
 
         if(self.enableSerial.checkState() == 2):
             ser = serial.Serial(
-                port='/dev/cu.usbmodem1424401',
+                port='/dev/cu.usbmodem1444301',
                 baudrate=9600,
                 timeout=1
             )
 
         if(ser):
-            ser.write(0)
+            print("Reset serial")
+            ser.write(bytes('0', 'utf-8'))
 
         self.startButton.setText('Reset')
-        cam = cv2.VideoCapture(0)
+        cam = cv2.VideoCapture(1)
 
         check, frame = cam.read()
 
@@ -203,10 +204,10 @@ class Window(QtWidgets.QMainWindow):
 
             line = None
             if(ser):
-                line = ser.readline()
+                line = ser.read(ser.in_waiting)
 
             if(line):
-                self.status = line.decode.strip()
+                self.status = line.decode().strip()
 
             if(self.status == 'go' and self.startTime == 0):
                 self.startTime = int(time() * 1000)
