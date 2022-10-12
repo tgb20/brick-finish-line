@@ -2,12 +2,34 @@ from time import time
 import cv2
 import numpy as np
 import serial
+import json
 
 from PyQt5 import QtCore, QtGui, QtWidgets
 import sys
 
 
 class Window(QtWidgets.QMainWindow):
+
+    def saveOptions(self):
+        file = open('save.json', 'w+')
+        data = {"leftWidth": self.leftWidth.value(), "leftHeight": self.leftHeight.value(), "leftX": self.leftX.value(), "leftY": self.leftY.value(), "rightWidth": self.rightWidth.value(),
+                "rightHeight": self.rightHeight.value(), "rightX": self.rightX.value(), "rightY": self.rightY.value(), "threshMin": self.min.value(), "threshMax": self.max.value()}
+        json.dump(data, file)
+
+    def loadOptions(self):
+        file = open('save.json', 'r')
+        data = json.load(file)
+        self.leftWidth.setValue(data["leftWidth"])
+        self.leftHeight.setValue(data["leftHeight"])
+        self.leftX.setValue(data["leftX"])
+        self.leftY.setValue(data["leftY"])
+        self.rightWidth.setValue(data["rightWidth"])
+        self.rightHeight.setValue(data["rightHeight"])
+        self.rightX.setValue(data["rightX"])
+        self.rightY.setValue(data["rightY"])
+        self.min.setValue(data["threshMin"])
+        self.max.setValue(data["threshMax"])
+
     def setupUi(self, MainWindow):
 
         self.status = 'reset'
@@ -32,6 +54,14 @@ class Window(QtWidgets.QMainWindow):
         self.enableSerial = QtWidgets.QCheckBox()
         self.enableSerial.setText('Enable Serial')
         barLayout.addWidget(self.enableSerial)
+
+        self.saveButton = QtWidgets.QPushButton('Save')
+        self.saveButton.clicked.connect(self.saveOptions)
+        barLayout.addWidget(self.saveButton)
+
+        self.loadButton = QtWidgets.QPushButton('Load')
+        self.loadButton.clicked.connect(self.loadOptions)
+        barLayout.addWidget(self.loadButton)
 
         topBar = QtWidgets.QWidget()
         topBar.setLayout(barLayout)
