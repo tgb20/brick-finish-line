@@ -2,7 +2,10 @@
 name = "brick-finish-line"
 version = "0.1.0"
 description = "Detects the end of the track for the Holyoke Brick Race"
-authors = ["Jacob Bashista <j@cob.email>", "Andrew Pasquale <andrew@elytra.net>"]
+authors = [
+  "Jacob Bashista <j@cob.email>",
+  "Andrew Pasquale <andrew@elytra.net>",
+]
 
 [tool.poetry.dependencies]
 python = "^3.9"
